@@ -22,6 +22,25 @@ function cmdinterface(type, data) {
     var args = data.args;
     if (args.length == 1) {
         return displayHelp(type);
+    } else if (args.length > 1) {
+        switch (args[1].toLocaleLowerCase()) {
+            case "join":
+                break;
+            case "leave":
+                break;
+            case "start":
+                break;
+            case "list":
+                break;
+            case "nlist":
+                break;
+            case "vote":
+                break;
+            case "unvote":
+                break;
+            default:
+                return unknownCmd();
+        }
     }
 }
 
@@ -29,7 +48,7 @@ function cmdconfig(type, data) {
     var args = data.args;
 }
 
-function displayHelp(type) {
+function displayHelp() {
     var helpData = "";
     for (var line in langpack[global.config.language].displayHelp) {
         if (helpData == "") {
@@ -41,6 +60,13 @@ function displayHelp(type) {
     return {
         handler: "core",
         data: helpData
+    }
+}
+
+function unknownCmd() {
+    return {
+        handler: "core",
+        data: langpack[global.config.language].unknownCmd
     }
 }
 

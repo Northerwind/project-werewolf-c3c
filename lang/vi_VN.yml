@@ -1,5 +1,6 @@
 displayHelp:
-  1: "Các lệnh trong Werewolf:"
+  0: "Các lệnh trong Werewolf:"
+  1: "`/ww help`: Xem hướng dẫn về các lệnh này"
   2: "`/ww join`: Tham gia game ở trong group này"
   2: "`/ww leave`: Huỷ tham gia game ở trong group này"
   3: "`/ww start`: Bắt đầu game ở trong group (cần ít nhất 7 người)"
@@ -28,3 +29,4 @@ alreadyStarted: "Trò chơi đã bắt đầu rồi!"
 starting: "Bắt đầu trò chơi!"
 voted: "Bạn đã bầu chọn cho số {0} ({1}) bị treo cổ thành công!"
 unvoted: "Bạn đã huỷ bầu chọn!"
+unknownCmd: "Câu lệnh không rõ. Xem danh sách lệnh trong Werewolf bằng lệnh `/ww help`."
