@@ -1,6 +1,6 @@
 !global.data.werewolf ? global.data.werewolf = {} : "";
 
-var random = function(min, max) { 
+var randomNumber = function(min, max) { 
 	if (min > max) {
 		var temp = min;
 		min = max;
@@ -30,9 +30,17 @@ function cmdconfig(type, data) {
 }
 
 function displayHelp(type) {
+    var helpData = "";
+    for (var line in langpack[global.config.language].displayHelp) {
+        if (helpData == "") {
+            helpData += langpack[global.config.language].displayHelp[line];
+        } else {
+            helpData += "\r\n" + langpack[global.config.language].displayHelp[line];
+        }
+    }
     return {
         handler: "core",
-        data: ""
+        data: helpData
     }
 }
 
