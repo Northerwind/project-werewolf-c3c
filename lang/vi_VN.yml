@@ -19,4 +19,5 @@ roleInfo:
 voteTime: "Đến giờ bầu chọn người để treo cổ! Sử dụng `/ww vote <số>` để bầu chọn."
 nightTime: "Màn đêm buông xuống... Đêm {0} bắt đầu."
 dayTime: "Ngày {0} bắt đầu. Thảo luận nào!"
-playerDead: "Số {0} ({1}) đã chết!"
+playerDeadByWerewolf: "Số {0} ({1}) đã bị sói cắn."
+playerDeadByHang: "Số {0} ({1}) đã bị treo cổ."
