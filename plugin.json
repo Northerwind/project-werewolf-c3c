@@ -1,0 +1,30 @@
+{
+	"plugin_name": "Werewolf",
+	"plugin_scope": "werewolf",
+	"plugin_exec": "index.js",
+	"command_map": {
+		"ww": {
+			"hargs": "[arg1 [arg2]]",
+			"hdesc": {
+                "vi_VN": "Lệnh về trò chơi Ma Sói",
+                "en_US": "A Werewolf game"
+            },
+			"fscope": "cmdinterface",
+			"compatibly": 1
+        },
+        "wwconfig": {
+            "hargs": "[arg1 [arg2]]",
+			"hdesc": {
+                "vi_VN": "Cấu hình về trò chơi Ma Sói",
+                "en_US": "Config Werewolf games"
+            },
+			"fscope": "cmdconfig",
+			"compatibly": 1
+        }
+	},
+	"author": "UIRI",
+	"version": "0.1",
+	"node_depends": {
+		"wait-for-stuff": "*"
+	}
+}
