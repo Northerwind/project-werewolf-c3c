@@ -16,3 +16,7 @@ roleInfo:
   seer: "Bạn có thể soi ra vai trò người khác bằng lệnh `/ww see <số>`."
   doctor: "Bạn có thể bảo vệ người khác bằng lệnh `/ww cover <số>`. Sói sẽ không thể cắn người bạn bảo vệ."
   villager: "Bạn chỉ là một dân làng bình thường, không có chức năng."
+voteTime: "Đến giờ bầu chọn người để treo cổ! Sử dụng `/ww vote <số>` để bầu chọn."
+nightTime: "Màn đêm buông xuống... Đêm {0} bắt đầu."
+dayTime: "Ngày {0} bắt đầu. Thảo luận nào!"
+playerDead: "Số {0} ({1}) đã chết!"
