@@ -25,6 +25,12 @@
 	"author": "UIRI",
 	"version": "0.1",
 	"node_depends": {
-		"wait-for-stuff": "*"
+        "wait-for-stuff": "*",
+        "js-yaml": "*",
+        "crypto": "*"
+    },
+    "dependents": ["Economy"],
+    "file_map": {
+		"lang/vi_VN.yml": "werewolf_lang_vi_VN"
 	}
 }
