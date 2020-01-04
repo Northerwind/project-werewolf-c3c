@@ -2,19 +2,19 @@
     playersList: {}
 } : "";
 
-var randomNumber = function(min, max) { 
-	if (min > max) {
-		var temp = min;
-		min = max;
-		max = temp;
-	}
-	var bnum = (max - min).toString(16).length / 2;
-	if (bnum < 1) bnum = 1;
-	return Math.round(parseInt(global.nodemodule.crypto.randomBytes(bnum).toString('hex'), 16) / Math.pow(16, bnum * 2) * (max - min)) + min; 
+var randomNumber = function (min, max) {
+    if (min > max) {
+        var temp = min;
+        min = max;
+        max = temp;
+    }
+    var bnum = (max - min).toString(16).length / 2;
+    if (bnum < 1) bnum = 1;
+    return Math.round(parseInt(global.nodemodule.crypto.randomBytes(bnum).toString('hex'), 16) / Math.pow(16, bnum * 2) * (max - min)) + min;
 };
 
 var langpack = {
-	"vi_VN": "werewolf_lang_vi_VN"
+    "vi_VN": "werewolf_lang_vi_VN"
 }
 for (var lang in langpack) {
     langpack[lang] = global.nodemodule["js-yaml"].load(global.fileMap[langpack[lang]]);
@@ -27,9 +27,9 @@ function cmdinterface(type, data) {
     } else if (args.length > 1) {
         switch (args[1].toLocaleLowerCase()) {
             case "join":
-                break;
+                return join(data.msgdata.senderID, data.msgdata.threadID);
             case "leave":
-                break;
+                return join(data.msgdata.senderID);
             case "start":
                 break;
             case "list":
@@ -101,6 +101,21 @@ function join(fbid, threadid) {
         return {
             handler: "core",
             data: langpack[global.config.language].groupOnly
+        }
+    }
+}
+
+function leave(senderid) {
+    if (global.data.werewolf.playersList[fbid] == "-1") {
+        return {
+            handler: "core",
+            data: langpack[global.config.language].notJoined
+        }
+    } else {
+        global.data.werewolf.playersList[fbid] = "-1";
+        return {
+            handler: "core",
+            data: langpack[global.config.language].leaved
         }
     }
 }
