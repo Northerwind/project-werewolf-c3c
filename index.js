@@ -1,4 +1,6 @@
-!global.data.werewolf ? global.data.werewolf = {} : "";
+!global.data.werewolf ? global.data.werewolf = {
+    playersList: {}
+} : "";
 
 var randomNumber = function(min, max) { 
 	if (min > max) {
@@ -38,6 +40,8 @@ function cmdinterface(type, data) {
                 break;
             case "unvote":
                 break;
+            case "help":
+                return displayHelp();
             default:
                 return unknownCmd();
         }
@@ -67,6 +71,37 @@ function unknownCmd() {
     return {
         handler: "core",
         data: langpack[global.config.language].unknownCmd
+    }
+}
+
+function join(fbid, threadid) {
+    var group = (fbid == threadid);
+    !global.data.werewolf.playersList[fbid] ? global.data.werewolf.playersList[fbid] = "-1" : "";
+    if (group) {
+        if (global.data.werewolf.playersList[fbid] != "-1") {
+            if (global.data.werewolf.playersList[fbid] != threadid) {
+                return {
+                    handler: "core",
+                    data: langpack[global.config.language].alreadyJoinedOthers
+                }
+            } else {
+                return {
+                    handler: "core",
+                    data: langpack[global.config.language].alreadyJoined
+                }
+            }
+        } else {
+            global.data.werewolf.playersList[fbid] = threadid;
+            return {
+                handler: "core",
+                data: langpack[global.config.language].joined
+            }
+        }
+    } else {
+        return {
+            handler: "core",
+            data: langpack[global.config.language].groupOnly
+        }
     }
 }
 
