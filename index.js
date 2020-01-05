@@ -35,7 +35,7 @@ function cmdinterface(type, data) {
             case "start":
                 break;
             case "list":
-                return 
+                return list(data.msgdata.threadID);
                 break;
             case "nlist":
                 break;
