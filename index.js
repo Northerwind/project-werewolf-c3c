@@ -241,7 +241,10 @@ function startGame(data) {
         }
         global.data.werewolf.runningGames[data.msgdata.threadID] = {
             players: objplist,
-            reverseMapping: reverseMapping
+            reverseMapping: reverseMapping,
+            day: 0,
+            night: true,
+            votingTime: false
         }
         var roleListBC = langpack[global.config.language].roleListH;
         var counting = {};
@@ -252,6 +255,7 @@ function startGame(data) {
             roleListBC += "\r\n" + counting[n] + "x " + langpack[global.config.language].roleName[n];
         }
         roleListBC += "\r\n\r\n" + langpack[global.config.language].starting;
+        //TODO: Game logic function reference here.
         return {
             handler: "internal",
             data: roleListBC
