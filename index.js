@@ -109,7 +109,16 @@ function getRoleTable(np) {
     if (np >= 5 && np <= 8) {
         return roleTable[np][randomNumber(0, roleTable[np].length - 1)];
     } else if (np > 8) {
-        
+        var arr = [];
+
+        for (var i = 0; i < Math.floor(np / 2); i++) arr.push("villager");
+        var villagercount = arr.length;
+        for (var i = 0; i < Math.floor(villagercount / 1.5); i++) arr.push("werewolf");
+        var werewolfcount = arr.length - villagercount;
+        var slotLeft = np - arr.length;
+        for (var i = 0; i < slotLeft; i++) arr.push(["seer", "bodyguard", "headhunter", "witch"][randomNumber(0, 3)])
+
+        return arr;
     }
 }
 
@@ -189,7 +198,7 @@ function startGame(data) {
         var objplist = {};
         var reverseMapping = {};
         for (var n in playerlist) {
-            objplist[n] = {
+            objplist[n + 1] = {
                 id: playerlist[n],
                 dead: false,
                 deadBy: "notdead",
@@ -199,9 +208,53 @@ function startGame(data) {
             }
             reverseMapping[playerlist[n]] = n;
         }
+        var roleTable = getRoleTable(global.data.werewolf.groupPlayers[data.msgdata.threadID].length);
+        roleTable.sort(() => randomNumber(-1, 1));
+        for (var n in roleTable) {
+            objplist[n + 1].role = roleTable[n];
+            switch (roleTable[n]) {
+                case "witch":
+                    objplist[n + 1].roleData = {
+                        killPotion: true,
+                        healPotion: true,
+                        kill: "none",
+                        heal: "none"
+                    };
+                    break;
+                case "bodyguard":
+                    objplist[n + 1].roleData = {
+                        lastCover: "none",
+                        cover: "none"
+                    };
+                    break;
+                case "headhunter":
+                    objplist[n + 1].roleData = {
+                        hunting: "none"
+                    };
+                    break;
+                case "werewolf":
+                    objplist[n + 1].roleData = {
+                        kill: "none"
+                    };
+                    break;
+            }
+        }
         global.data.werewolf.runningGames[data.msgdata.threadID] = {
             players: objplist,
             reverseMapping: reverseMapping
+        }
+        var roleListBC = langpack[global.config.language].roleListH;
+        var counting = {};
+        for (var n in roleTable) {
+            !counting.hasOwnProperty(roleTable[n]) ? counting[roleTable[n]] = 1 : counting[roleTable[n]] += 1;
+        }
+        for (var n in counting) {
+            roleListBC += "\r\n" + counting[n] + "x " + langpack[global.config.language].roleName[n];
+        }
+        roleListBC += "\r\n\r\n" + langpack[global.config.language].starting;
+        return {
+            handler: "internal",
+            data: roleListBC
         }
     } else {
         return {
