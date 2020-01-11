@@ -4,6 +4,14 @@
     runningGames: {}
 } : "";
 
+/**
+ * Get a random number
+ *
+ * @param  {number} min Minimum
+ * @param  {number} max Maximum
+ * 
+ * @return {number} Randomized number
+ */
 var randomNumber = function (min, max) {
     if (min > max) {
         var temp = min;
@@ -67,8 +75,21 @@ function startGame(data) {
     }
 
     if (!global.data.werewolf.runningGames.hasOwnProperty(data.msgdata.threadID)) {
+        var playerlist = global.data.werewolf.groupPlayers[data.msgdata.threadID];
+        playerlist.sort(() => randomNumber(-1, 1))
+        var objplist = {};
+        var reverseMapping = {};
+        for (var n in playerlist) {
+            objplist[n] = {
+                id: playerlist[n],
+                dead: false,
+                role: "unknown"
+            }
+            reverseMapping[playerlist[n]] = n;
+        }
         global.data.werewolf.runningGames[data.msgdata.threadID] = {
-            
+            players: objplist,
+            reverseMapping: reverseMapping
         }
     } else {
         return {
