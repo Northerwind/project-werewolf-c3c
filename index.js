@@ -4,6 +4,115 @@
     runningGames: {}
 } : "";
 
+roleTable = {
+    5: [
+        [
+            "villager",
+            "villager",
+            "villager",
+            "headhunter",
+            "werewolf"
+        ],
+        [
+            "villager",
+            "villager",
+            "villager",
+            "seer",
+            "werewolf"
+        ],
+        [
+            "villager",
+            "villager",
+            "bodyguard",
+            "headhunter",
+            "werewolf"
+        ]
+    ],
+    6: [
+        [
+            "villager",
+            "villager",
+            "villager",
+            "headhunter",
+            "seer",
+            "werewolf"
+        ],
+        [
+            "villager",
+            "villager",
+            "seer",
+            "headhunter",
+            "werewolf",
+            "werewolf"
+        ]
+    ],
+    7: [
+        [
+            "villager",
+            "villager",
+            "villager",
+            "villager",
+            "seer",
+            "werewolf"
+        ],
+        [
+            "villager",
+            "villager",
+            "villager",
+            "headhunter",
+            "witch",
+            "werewolf",
+            "werewolf"
+        ],
+        [
+            "villager",
+            "villager",
+            "villager",
+            "villager",
+            "villager",
+            "villager",
+            "werewolf"
+        ]
+    ],
+    8: [
+        [
+            "villager",
+            "villager",
+            "villager",
+            "villager",
+            "bodyguard",
+            "seer",
+            "werewolf",
+            "werewolf"
+        ],
+        [
+            "villager",
+            "villager",
+            "villager",
+            "seer",
+            "witch",
+            "headhunter",
+            "werewolf",
+            "werewolf"
+        ]
+    ]
+}
+
+/**
+ * Get role table.
+ *
+ * @param   {number}        np  Number of players.
+ *
+ * @return  {Array<String>}     Role table.
+ */
+function getRoleTable(np) {
+    if (np >= 5 && np <= 8) {
+        return roleTable[np][randomNumber(0, roleTable[np].length - 1)];
+    } else if (np > 8) {
+        
+    }
+}
+
 /**
  * Get a random number
  *
@@ -66,7 +175,7 @@ function cmdinterface(type, data) {
  * @return  {object}        C3C-compatible message
  */
 function startGame(data) {
-    if (global.data.werewolf.groupPlayers[data.msgdata.threadID].length < 7) {
+    if (global.data.werewolf.groupPlayers[data.msgdata.threadID].length < 5) {
         //Not enough players.
         return {
             handler: "internal",
@@ -83,7 +192,10 @@ function startGame(data) {
             objplist[n] = {
                 id: playerlist[n],
                 dead: false,
-                role: "unknown"
+                deadBy: "notdead",
+                role: "unknown",
+                roleData: {},
+                vote: "none"
             }
             reverseMapping[playerlist[n]] = n;
         }
