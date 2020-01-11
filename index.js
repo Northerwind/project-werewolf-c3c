@@ -171,7 +171,7 @@ function cmdinterface(type, data) {
             case "help":
                 return displayHelp();
             default:
-                return unknownCmd();
+                return unknownCmd(args[1].toLocaleLowerCase());
         }
     }
 }
