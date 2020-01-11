@@ -33,10 +33,9 @@ function cmdinterface(type, data) {
             case "leave":
                 return leave(data.msgdata.senderID);
             case "start":
-                break;
+                return startGame(data);
             case "list":
                 return list(data.msgdata.threadID);
-                break;
             case "nlist":
                 break;
             case "vote":
@@ -47,6 +46,34 @@ function cmdinterface(type, data) {
                 return displayHelp();
             default:
                 return unknownCmd();
+        }
+    }
+}
+
+/**
+ * Start a werewolf game
+ *
+ * @param   {object}  data  Message object that required to start game.
+ *
+ * @return  {object}        C3C-compatible message
+ */
+function startGame(data) {
+    if (global.data.werewolf.groupPlayers[data.msgdata.threadID].length < 7) {
+        //Not enough players.
+        return {
+            handler: "internal",
+            data: langpack[global.config.language].needAtLeast7Players
+        }
+    }
+
+    if (!global.data.werewolf.runningGames.hasOwnProperty(data.msgdata.threadID)) {
+        global.data.werewolf.runningGames[data.msgdata.threadID] = {
+            
+        }
+    } else {
+        return {
+            handler: "internal",
+            data: langpack[global.config.language].alreadyStarted
         }
     }
 }
@@ -108,12 +135,19 @@ function join(fbid, threadid) {
                 }
             }
         } else {
-            global.data.werewolf.playersList[fbid] = threadid;
-            !global.data.werewolf.groupPlayers[threadid] ? global.data.werewolf.groupPlayers[threadid] = [] : "";
-            global.data.werewolf.groupPlayers[threadid].push(fbid);
-            return {
-                handler: "internal",
-                data: langpack[global.config.language].joined
+            if (!global.data.werewolf.runningGames.hasOwnProperty(threadid)) {
+                global.data.werewolf.playersList[fbid] = threadid;
+                !global.data.werewolf.groupPlayers[threadid] ? global.data.werewolf.groupPlayers[threadid] = [] : "";
+                global.data.werewolf.groupPlayers[threadid].push(fbid);
+                return {
+                    handler: "internal",
+                    data: langpack[global.config.language].joined
+                }
+            } else {
+                return {
+                    handler: "internal",
+                    data: langpack[global.config.language].alreadyStarted
+                }
             }
         }
     } else {
@@ -127,22 +161,29 @@ function join(fbid, threadid) {
 /**
  * Leave game function
  *
- * @param   {string}  senderid  Sender's Facebook ID
+ * @param   {string}  fbid  Sender's Facebook ID
  *
- * @return  {object}            C3C-compatible message
+ * @return  {object}        C3C-compatible message
  */
-function leave(senderid) {
-    if (global.data.werewolf.playersList[fbid] == "-1") {
-        return {
-            handler: "internal",
-            data: langpack[global.config.language].notJoined
+function leave(fbid) {
+    if (!global.data.werewolf.runningGames.hasOwnProperty(global.data.werewolf.playersList[fbid])) {
+        if (global.data.werewolf.playersList[fbid] == "-1") {
+            return {
+                handler: "internal",
+                data: langpack[global.config.language].notJoined
+            }
+        } else {
+            global.data.werewolf.playersList[fbid] = "-1";
+            delete global.data.werewolf.groupPlayers[global.data.werewolf.playersList[fbid]][global.data.werewolf.groupPlayers[global.data.werewolf.playersList[fbid]].indexOf(fbid)];
+            return {
+                handler: "internal",
+                data: langpack[global.config.language].leaved
+            }
         }
     } else {
-        global.data.werewolf.playersList[fbid] = "-1";
-        delete global.data.werewolf.groupPlayers[global.data.werewolf.playersList[fbid]][global.data.werewolf.groupPlayers[global.data.werewolf.playersList[fbid]].indexOf(fbid)];
         return {
             handler: "internal",
-            data: langpack[global.config.language].leaved
+            data: langpack[global.config.language].cannotLeaveUntilGameEnd
         }
     }
 }
